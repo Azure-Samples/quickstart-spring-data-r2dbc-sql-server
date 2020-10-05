@@ -17,6 +17,7 @@ public class TodoRepositoryTest {
 
     @Autowired
     TodoRepository todoRepository;
+
     @Autowired
     DatabaseClient database;
 
@@ -40,8 +41,8 @@ public class TodoRepositoryTest {
     @Test
     public void test_Whether_FindAll_Returns_All_Rows_From_DB() {
 
-        Todo grocery=new Todo("Buy Milk","Buy Milk from store tomorrow",false);
-        Todo carwash=new Todo("Car Wash","Get car wash done today",false);
+        Todo grocery = new Todo("Buy Milk", "Buy Milk from store tomorrow", false);
+        Todo carwash = new Todo("Car Wash", "Get car wash done today", false);
 
         insertTodos(grocery, carwash);
 
@@ -54,7 +55,7 @@ public class TodoRepositoryTest {
 
     @Test
     public void test_Whether_Save_Inserts_Data() {
-        Todo icecream=new Todo("Buy Icecream","Buy Icecream for kids today",false);
+        Todo icecream = new Todo("Buy Icecream", "Buy Icecream for kids today", false);
         todoRepository.save(icecream)
                 .as(StepVerifier::create)
                 .expectNextMatches(todo -> todo.getId() != null)
@@ -63,7 +64,7 @@ public class TodoRepositoryTest {
 
     @Test
     public void test_Whether_Delete_Removes_Data() {
-        Todo gas=new Todo("Fill Gas","Fill gas in jeep today",false);
+        Todo gas = new Todo("Fill Gas", "Fill gas in jeep today", false);
 
         Mono<Todo> deleted = todoRepository
                 .save(gas)
@@ -77,7 +78,7 @@ public class TodoRepositoryTest {
 
     @Test
     public void test_Whether_Update_Changes_Flag() {
-        Todo laundry=new Todo("Laundry","Do laundry today",false);
+        Todo laundry = new Todo("Laundry", "Do laundry today", false);
 
         Mono<Todo> saved = todoRepository
                 .save(laundry)
