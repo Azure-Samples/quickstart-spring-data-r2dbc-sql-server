@@ -34,22 +34,25 @@ public class TodoRepositoryTest {
     @Test
     public void test_Whether_FindAll_Returns_All_Rows_From_DB() {
 
-        Todo grocery = new Todo("Todo 1", "This is the first todo", false);
-        Todo carwash = new Todo("Todo 2", "This is the second todo", false);
+        Todo todo1 = new Todo("Todo 1", "This is the first todo", false);
+        Todo todo2 = new Todo("Todo 2", "This is the second todo", false);
 
-        insertTodos(grocery, carwash);
+        this.todoRepository.saveAll(Arrays.asList(todo1, todo2))
+                .as(StepVerifier::create)
+                .expectNextCount(2)
+                .verifyComplete();
 
         todoRepository.findAll()
                 .as(StepVerifier::create)
-                .assertNext(grocery::equals)
-                .assertNext(carwash::equals)
+                .assertNext(todo1::equals)
+                .assertNext(todo2::equals)
                 .verifyComplete();
     }
 
     @Test
     public void test_Whether_Save_Inserts_Data() {
-        Todo icecream = new Todo("Todo 3", "This is the third todo", false);
-        todoRepository.save(icecream)
+        Todo todo4 = new Todo("Todo 3", "This is the third todo", false);
+        todoRepository.save(todo4)
                 .as(StepVerifier::create)
                 .expectNextMatches(todo -> todo.getId() != null)
                 .verifyComplete();
@@ -57,24 +60,24 @@ public class TodoRepositoryTest {
 
     @Test
     public void test_Whether_Delete_Removes_Data() {
-        Todo gas = new Todo("Todo 4", "This is the fourth todo", false);
+        Todo todo4 = new Todo("Todo 4", "This is the fourth todo", false);
 
         Mono<Todo> deleted = todoRepository
-                .save(gas)
+                .save(todo4)
                 .flatMap(saved -> todoRepository.delete(saved).thenReturn(saved));
 
         StepVerifier
                 .create(deleted)
-                .expectNextMatches(customer -> gas.getDescription().equalsIgnoreCase("Todo 4"))
+                .expectNextMatches(customer -> todo4.getDescription().equalsIgnoreCase("Todo 4"))
                 .verifyComplete();
     }
 
     @Test
     public void test_Whether_Update_Changes_Flag() {
-        Todo laundry = new Todo("Todo 5", "This is the fifth todo", false);
+        Todo todo5 = new Todo("Todo 5", "This is the fifth todo", false);
 
         Mono<Todo> saved = todoRepository
-                .save(laundry)
+                .save(todo5)
                 .flatMap(todo -> {
                     todo.setDone(true);
                     return todoRepository.save(todo);
@@ -83,14 +86,6 @@ public class TodoRepositoryTest {
         StepVerifier
                 .create(saved)
                 .expectNextMatches(Todo::isDone)
-                .verifyComplete();
-    }
-
-    private void insertTodos(Todo... todos) {
-
-        this.todoRepository.saveAll(Arrays.asList(todos))
-                .as(StepVerifier::create)
-                .expectNextCount(2)
                 .verifyComplete();
     }
 }
