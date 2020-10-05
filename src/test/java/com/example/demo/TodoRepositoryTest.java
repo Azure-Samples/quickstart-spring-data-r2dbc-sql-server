@@ -34,8 +34,8 @@ public class TodoRepositoryTest {
     @Test
     public void test_Whether_FindAll_Returns_All_Rows_From_DB() {
 
-        Todo grocery = new Todo("Buy Milk", "Buy Milk from store tomorrow", false);
-        Todo carwash = new Todo("Car Wash", "Get car wash done today", false);
+        Todo grocery = new Todo("Todo 1", "This is the first todo", false);
+        Todo carwash = new Todo("Todo 2", "This is the second todo", false);
 
         insertTodos(grocery, carwash);
 
@@ -48,7 +48,7 @@ public class TodoRepositoryTest {
 
     @Test
     public void test_Whether_Save_Inserts_Data() {
-        Todo icecream = new Todo("Buy Icecream", "Buy Icecream for kids today", false);
+        Todo icecream = new Todo("Todo 3", "This is the third todo", false);
         todoRepository.save(icecream)
                 .as(StepVerifier::create)
                 .expectNextMatches(todo -> todo.getId() != null)
@@ -57,7 +57,7 @@ public class TodoRepositoryTest {
 
     @Test
     public void test_Whether_Delete_Removes_Data() {
-        Todo gas = new Todo("Fill Gas", "Fill gas in jeep today", false);
+        Todo gas = new Todo("Todo 4", "This is the fourth todo", false);
 
         Mono<Todo> deleted = todoRepository
                 .save(gas)
@@ -65,13 +65,13 @@ public class TodoRepositoryTest {
 
         StepVerifier
                 .create(deleted)
-                .expectNextMatches(customer -> gas.getDescription().equalsIgnoreCase("Fill Gas"))
+                .expectNextMatches(customer -> gas.getDescription().equalsIgnoreCase("Todo 4"))
                 .verifyComplete();
     }
 
     @Test
     public void test_Whether_Update_Changes_Flag() {
-        Todo laundry = new Todo("Laundry", "Do laundry today", false);
+        Todo laundry = new Todo("Todo 5", "This is the fifth todo", false);
 
         Mono<Todo> saved = todoRepository
                 .save(laundry)
