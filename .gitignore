@@ -363,3 +363,4 @@ local.properties
 .settings/
 .loadpath
 .factorypath
+/demo.iml
