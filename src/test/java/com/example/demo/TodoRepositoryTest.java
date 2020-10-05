@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.r2dbc.core.DatabaseClient;
-import org.springframework.test.context.ActiveProfiles;
 import reactor.core.publisher.Hooks;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
@@ -14,7 +13,6 @@ import java.util.Arrays;
 import java.util.List;
 
 @SpringBootTest
-@ActiveProfiles("test")
 public class TodoRepositoryTest {
 
     @Autowired
