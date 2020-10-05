@@ -23,19 +23,13 @@ public class TodoRepositoryTest {
 
     @BeforeEach
     public void setUp() {
-
         Hooks.onOperatorDebug();
 
-        List<String> statements = Arrays.asList(
-                "DROP TABLE IF EXISTS todo;",
-                "CREATE TABLE todo ( id SERIAL PRIMARY KEY, description VARCHAR(100) NOT NULL, details VARCHAR(100) NOT NULL, done BOOLEAN);");
-
-        statements.forEach(it -> database.execute(it)
-                .fetch()
+        database.execute("DELETE FROM todo;").fetch()
                 .rowsUpdated()
                 .as(StepVerifier::create)
                 .expectNextCount(1)
-                .verifyComplete());
+                .verifyComplete();
     }
 
     @Test
